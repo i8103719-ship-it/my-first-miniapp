@@ -70,15 +70,18 @@
                 return;
             }
 
-            // Собираем данные в объект
             let data = {
                 name: name,
                 service: service
             };
 
-            // Отправляем данные боту и закрываем окно
+            // Отправляем данные боту
             tg.sendData(JSON.stringify(data));
-            tg.close();
+            
+            // Небольшая задержка, чтобы данные точно ушли до закрытия
+            setTimeout(() => {
+                tg.close();
+            }, 500); 
         }
     </script>
 </body>
