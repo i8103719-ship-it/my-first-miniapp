@@ -3,241 +3,540 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>BLACK STORE</title>
 
-    <title>Мой магазин</title>
-
-    <!-- Telegram Mini App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-        /* Переменные темы Telegram */
         :root {
-            --bg: var(--tg-theme-bg-color, #ffffff);
-            --text: var(--tg-theme-text-color, #222222);
-            --hint: var(--tg-theme-hint-color, #999999);
-            --button: var(--tg-theme-button-color, #2481cc);
+            --bg: var(--tg-theme-bg-color, #171a2b);
+            --text: var(--tg-theme-text-color, #ffffff);
+            --hint: var(--tg-theme-hint-color, #9298b5);
+            --secondary: var(--tg-theme-secondary-bg-color, #22263d);
+            --button: var(--tg-theme-button-color, #7955f5);
             --button-text: var(--tg-theme-button-text-color, #ffffff);
-            --secondary: var(--tg-theme-secondary-bg-color, #f1f1f1);
-            --card: var(--tg-theme-section-bg-color, #ffffff);
+
+            --card: #252a43;
+            --purple: #7857ff;
+            --pink: #a34dff;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                         Roboto, sans-serif;
             background: var(--bg);
             color: var(--text);
-            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", sans-serif;
+            padding: 15px;
+            padding-bottom: 100px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
+        button {
+            font-family: inherit;
         }
 
-        .header h1 {
+        /* Верхняя панель */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 23px;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #9676ff;
+        }
+
+        .balance {
+            background: var(--card);
+            border: 1px solid #444967;
+            border-radius: 25px;
+            padding: 10px 15px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* Баннер */
+
+        .hero {
+            height: 190px;
+            border-radius: 23px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 23px;
+
+            background:
+                linear-gradient(90deg,
+                    rgba(37, 8, 92, 0.95),
+                    rgba(90, 35, 190, 0.3)),
+                url("https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=85");
+
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #6041b8;
+        }
+
+        .hero-content {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: #a64eff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 9px;
+        }
+
+        .hero h1 {
             font-size: 26px;
-            margin-bottom: 8px;
+            font-weight: 900;
+            margin-bottom: 5px;
         }
 
-        .header p {
-            color: var(--hint);
-            font-size: 14px;
+        .hero p {
+            font-size: 13px;
+            color: #e0d5ff;
         }
+
+        /* Категории */
+
+        .section-title {
+            font-size: 21px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 9px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            flex-shrink: 0;
+            border: 1px solid #414761;
+            background: var(--card);
+            color: var(--text);
+            border-radius: 25px;
+            padding: 11px 17px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .category.active {
+            background: linear-gradient(135deg, #7657ff, #a04dff);
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Сетка товаров */
 
         .products {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
+            gap: 13px;
         }
 
         .product {
-            background: var(--secondary);
-            border-radius: 18px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
+            background: var(--card);
+            border: 1px solid #383e5c;
+            border-radius: 19px;
+            padding: 9px;
+            overflow: hidden;
             min-width: 0;
         }
 
         .product-image {
-            height: 115px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 65px;
-            background: var(--bg);
-            border-radius: 14px;
-            margin-bottom: 12px;
+            width: 100%;
+            height: 155px;
+            object-fit: cover;
+            border-radius: 13px;
+            background: #343953;
+            display: block;
         }
 
-        .product h3 {
-            font-size: 16px;
-            margin-bottom: 6px;
+        .product-info {
+            padding: 10px 3px 3px;
         }
 
-        .description {
-            font-size: 12px;
-            color: var(--hint);
-            margin-bottom: 12px;
-            flex-grow: 1;
+        .product-category {
+            color: #a18aff;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 5px;
         }
 
-        .price {
+        .product-name {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
             font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-weight: 900;
+            margin-bottom: 11px;
         }
 
         .buy-button {
+            width: 100%;
+            padding: 12px 5px;
             border: none;
             border-radius: 12px;
-            background: var(--button);
-            color: var(--button-text);
-            padding: 12px 8px;
-            font-size: 14px;
-            font-weight: 600;
+
+            background: linear-gradient(
+                135deg,
+                #7254ff,
+                #a24eff
+            );
+
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
             cursor: pointer;
-            width: 100%;
-            transition: opacity 0.2s;
         }
 
         .buy-button:active {
-            opacity: 0.7;
+            transform: scale(0.97);
+            opacity: 0.8;
         }
 
-        .footer {
+        /* Нижняя навигация */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 10px;
+            left: 15px;
+            right: 15px;
+
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            padding: 13px 5px;
+
+            background: #282c43;
+            border: 1px solid #474d6a;
+            border-radius: 22px;
+
+            z-index: 10;
+
+            box-shadow: 0 5px 30px rgba(0,0,0,0.35);
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: #a1a7c0;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-item span {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: #a58bff;
+        }
+
+        /* Уведомление */
+
+        .toast {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+
+            background: #7657ff;
+            color: white;
+            padding: 14px;
+            border-radius: 13px;
+
             text-align: center;
-            color: var(--hint);
-            font-size: 12px;
-            margin-top: 25px;
-            padding-bottom: 15px;
+            font-weight: 700;
+
+            display: none;
+            z-index: 100;
         }
 
-        @media (max-width: 340px) {
-            .products {
-                grid-template-columns: 1fr;
+        /* Адаптация */
+
+        @media (max-width: 350px) {
+            .product-image {
+                height: 125px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .product-price {
+                font-size: 16px;
             }
         }
+
     </style>
 </head>
 
 <body>
 
-    <header class="header">
-        <h1>🛍 Наш магазин</h1>
-        <p>Выбирайте товары и оформляйте заказ!</p>
+    <div class="toast" id="toast"></div>
+
+    <!-- Верхняя панель -->
+
+    <header class="topbar">
+
+        <div class="logo">
+            BLACK<span>STORE</span>
+        </div>
+
+        <div class="balance">
+            💎 SHOP
+        </div>
+
     </header>
 
-    <!-- Каталог товаров -->
-    <main class="products">
 
-        <article class="product">
-            <div class="product-image">👟</div>
+    <!-- Главный баннер -->
 
-            <h3>Кроссовки</h3>
+    <section class="hero">
 
-            <p class="description">
-                Удобные и стильные кроссовки для повседневной носки.
-            </p>
+        <div class="hero-content">
 
-            <div class="price">5 990 ₽</div>
+            <div class="hero-label">
+                NEW COLLECTION
+            </div>
 
-            <button
-                class="buy-button"
-                onclick="buyProduct('sneakers')"
+            <h1>ТВОЙ СТИЛЬ</h1>
+
+            <p>Новая коллекция уже в магазине 🔥</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Категории -->
+
+    <h2 class="section-title">
+        Каталог товаров
+    </h2>
+
+    <div class="categories">
+
+        <button class="category active"
+                onclick="filterProducts('all', this)">
+            Все
+        </button>
+
+        <button class="category"
+                onclick="filterProducts('shoes', this)">
+            👟 Обувь
+        </button>
+
+        <button class="category"
+                onclick="filterProducts('clothes', this)">
+            👕 Одежда
+        </button>
+
+        <button class="category"
+                onclick="filterProducts('accessories', this)">
+            🧢 Аксессуары
+        </button>
+
+    </div>
+
+
+    <!-- Товары -->
+
+    <div class="products" id="products">
+
+        <!-- Кроссовки -->
+
+        <article class="product" data-category="shoes">
+
+            <img
+                class="product-image"
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=85"
+                alt="Кроссовки"
             >
-                Купить
-            </button>
+
+            <div class="product-info">
+
+                <div class="product-category">Обувь</div>
+
+                <div class="product-name">Кроссовки</div>
+
+                <div class="product-price">5 990 ₽</div>
+
+                <button class="buy-button"
+                        onclick="buyProduct('sneakers')">
+                    Купить
+                </button>
+
+            </div>
+
         </article>
 
 
-        <article class="product">
-            <div class="product-image">👕</div>
+        <!-- Футболка -->
 
-            <h3>Футболка</h3>
+        <article class="product" data-category="clothes">
 
-            <p class="description">
-                Качественная хлопковая футболка.
-            </p>
-
-            <div class="price">1 990 ₽</div>
-
-            <button
-                class="buy-button"
-                onclick="buyProduct('tshirt')"
+            <img
+                class="product-image"
+                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85"
+                alt="Футболка"
             >
-                Купить
-            </button>
+
+            <div class="product-info">
+
+                <div class="product-category">Одежда</div>
+
+                <div class="product-name">Футболка</div>
+
+                <div class="product-price">1 990 ₽</div>
+
+                <button class="buy-button"
+                        onclick="buyProduct('tshirt')">
+                    Купить
+                </button>
+
+            </div>
+
         </article>
 
 
-        <article class="product">
-            <div class="product-image">🧢</div>
+        <!-- Кепка -->
 
-            <h3>Кепка</h3>
+        <article class="product" data-category="accessories">
 
-            <p class="description">
-                Стильная кепка с регулируемым размером.
-            </p>
-
-            <div class="price">990 ₽</div>
-
-            <button
-                class="buy-button"
-                onclick="buyProduct('cap')"
+            <img
+                class="product-image"
+                src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=700&q=85"
+                alt="Кепка"
             >
-                Купить
-            </button>
+
+            <div class="product-info">
+
+                <div class="product-category">Аксессуары</div>
+
+                <div class="product-name">Кепка</div>
+
+                <div class="product-price">990 ₽</div>
+
+                <button class="buy-button"
+                        onclick="buyProduct('cap')">
+                    Купить
+                </button>
+
+            </div>
+
         </article>
 
 
-        <article class="product">
-            <div class="product-image">🧥</div>
+        <!-- Худи -->
 
-            <h3>Худи</h3>
+        <article class="product" data-category="clothes">
 
-            <p class="description">
-                Тёплое и комфортное худи на каждый день.
-            </p>
-
-            <div class="price">3 990 ₽</div>
-
-            <button
-                class="buy-button"
-                onclick="buyProduct('hoodie')"
+            <img
+                class="product-image"
+                src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=700&q=85"
+                alt="Худи"
             >
-                Купить
-            </button>
+
+            <div class="product-info">
+
+                <div class="product-category">Одежда</div>
+
+                <div class="product-name">Худи</div>
+
+                <div class="product-price">3 990 ₽</div>
+
+                <button class="buy-button"
+                        onclick="buyProduct('hoodie')">
+                    Купить
+                </button>
+
+            </div>
+
         </article>
 
-    </main>
+    </div>
 
-    <footer class="footer">
-        © 2026 Мой магазин. Все права защищены.
-    </footer>
+
+    <!-- Нижняя навигация -->
+
+    <nav class="bottom-nav">
+
+        <button class="nav-item active"
+                onclick="showSection('catalog', this)">
+            <span>🏠</span>
+            Главная
+        </button>
+
+        <button class="nav-item"
+                onclick="showSection('catalog', this)">
+            <span>🛍</span>
+            Каталог
+        </button>
+
+        <button class="nav-item"
+                onclick="showSection('info', this)">
+            <span>ℹ️</span>
+            О магазине
+        </button>
+
+    </nav>
 
 
     <script>
-        // Инициализация Telegram Web App
+
+        // Инициализация Telegram Mini App
+
         const tg = window.Telegram.WebApp;
 
         tg.ready();
         tg.expand();
 
-        // Словарь ID товаров.
-        // Названия и цены окончательно проверяются ботом.
+        // Товары. Цены проверяются ботом на сервере.
+
         const products = {
+
             sneakers: {
                 id: "sneakers",
                 name: "Кроссовки",
@@ -261,9 +560,12 @@
                 name: "Худи",
                 price: 3990
             }
+
         };
 
+
         // Покупка товара
+
         function buyProduct(productId) {
 
             const product = products[productId];
@@ -273,16 +575,85 @@
                 return;
             }
 
-            // Отправляем данные боту
-            tg.sendData(JSON.stringify({
-                id: product.id,
-                name: product.name,
-                price: product.price
-            }));
+            // Подтверждение заказа
 
-            // Закрываем Mini App
-            tg.close();
+            tg.showConfirm(
+                "Добавить в заказ: " + product.name +
+                " за " + product.price + " ₽?",
+                function (confirmed) {
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    // Передача данных боту
+
+                    tg.sendData(JSON.stringify({
+
+                        id: product.id,
+                        name: product.name,
+                        price: product.price
+
+                    }));
+
+                    // Закрытие Mini App
+
+                    tg.close();
+
+                }
+            );
+
         }
+
+
+        // Фильтрация товаров по категориям
+
+        function filterProducts(category, button) {
+
+            document.querySelectorAll(".category")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            document.querySelectorAll(".product")
+                .forEach(product => {
+
+                    const productCategory =
+                        product.dataset.category;
+
+                    if (
+                        category === "all" ||
+                        productCategory === category
+                    ) {
+                        product.style.display = "block";
+                    } else {
+                        product.style.display = "none";
+                    }
+
+                });
+
+        }
+
+
+        // Нижняя навигация
+
+        function showSection(section, button) {
+
+            document.querySelectorAll(".nav-item")
+                .forEach(item => item.classList.remove("active"));
+
+            button.classList.add("active");
+
+            if (section === "info") {
+
+                tg.showAlert(
+                    "Добро пожаловать в BLACK STORE! ❤️"
+                );
+
+            }
+
+        }
+
     </script>
 
 </body>
