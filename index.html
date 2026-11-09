@@ -462,36 +462,36 @@ if (tg) {
     tg.setHeaderColor("#111111");
 }
 
-// Массив товаров (картинка худи исправлена)
+// Твои новые картинки (id оставлены строковыми, чтобы бот понимал заказ)
 const products = [
-    { 
-        id: "sneakers", 
-        name: "VOID Runner", 
-        category: "Footwear", 
-        price: 8990, 
-        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&q=85" 
-    },
-    { 
-        id: "tshirt", 
-        name: "VOID Oversize Tee", 
-        category: "Clothing", 
-        price: 3490, 
-        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=700&q=85" 
-    },
-    { 
-        id: "cap", 
-        name: "VOID Baseball Cap", 
-        category: "Accessories", 
-        price: 2490, 
-        image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=700&q=85" 
-    },
-    { 
-        id: "hoodie", 
-        name: "VOID Heavy Hoodie", 
-        category: "Clothing", 
-        price: 6490, 
-        image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=700&q=85" 
-    }
+  {
+    id: "sneakers",
+    name: "VOID SNEAKERS",
+    category: "Обувь",
+    price: 8990,
+    image: "https://148270186.cdn6.editmysite.com/uploads/1/4/8/2/148270186/RM544CUNK76PXNE4BVFRNHL3.jpeg"
+  },
+  {
+    id: "tshirt",
+    name: "VOID T-SHIRT",
+    category: "Одежда",
+    price: 3490,
+    image: "https://acdn-us.mitiendanube.com/stores/002/215/740/products/ro-negro-17350bc469ebf2bea517413040455983-1024-1024.jpg"
+  },
+  {
+    id: "cap",
+    name: "VOID CAP",
+    category: "Аксессуары",
+    price: 2490,
+    image: "https://images.unsplash.com/photo-1557225451-b03ada84e645?auto=format&fit=crop&w=900&q=85"
+  },
+  {
+    id: "hoodie",
+    name: "VOID HOODIE",
+    category: "Одежда",
+    price: 6490,
+    image: "https://p16-oec-general-useast5.ttcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/736eb6cf4bd64e1586afe8fbbff12790~tplv-fhlh96nyum-crop-webp%3A3000%3A3000.webp?dr=12190&from=2378011839&idc=useast5&ps=933b5bde&shcp=e1be8f53&shp=8dbd94bf&t=555f072d"
+  }
 ];
 
 let cart = [];
@@ -516,7 +516,7 @@ function renderProducts() {
     grid.innerHTML = products.map(product => `
         <div class="product-card">
             <div class="product-image">
-                <img src="${product.image}" alt="${product.name}" loading="eager">
+                <img src="${product.image}" alt="${product.name}" loading="eager" onerror="this.src='https://placehold.co/600x600/292929/d7ff3f?text=VOID'">
             </div>
             <div class="product-info">
                 <div class="product-category">${product.category}</div>
@@ -588,7 +588,7 @@ function renderCart() {
         total += itemTotal;
         return `
             <div class="cart-item">
-                <img src="${product.image}" alt="${product.name}">
+                <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${product.name}</div>
                     <div class="cart-item-price">${formatPrice(itemTotal)}</div>
